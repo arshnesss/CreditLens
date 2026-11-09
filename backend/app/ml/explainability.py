@@ -153,6 +153,8 @@ def explain_customer_prediction(
         # Map back to raw feature and raw value
         raw_feature = col_name.split("_")[0] if ("sex_" in col_name or "education_" in col_name or "marriage_" in col_name) else col_name
         raw_val = df_input[raw_feature].iloc[0] if raw_feature in df_input.columns else 0
+        if hasattr(raw_val, "item"):
+            raw_val = raw_val.item()
 
         direction = "increases_risk" if val_shap > 0 else "decreases_risk"
         impact = "High" if abs_shap >= 0.05 else ("Medium" if abs_shap >= 0.02 else "Low")
