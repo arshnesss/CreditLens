@@ -12,7 +12,8 @@ from backend.app.api import (
     model,
     analytics,
     reports,
-    investigator
+    investigator,
+    monitoring
 )
 
 # Setup logging
@@ -58,6 +59,7 @@ app.include_router(model.router, prefix=settings.API_V1_STR, tags=["Model Operat
 app.include_router(analytics.router, prefix=settings.API_V1_STR, tags=["Portfolio Analytics"])
 app.include_router(reports.router, prefix=settings.API_V1_STR, tags=["Report Generation"])
 app.include_router(investigator.router, prefix=settings.API_V1_STR, tags=["AI Risk Investigator Agent"])
+app.include_router(monitoring.router, prefix=settings.API_V1_STR, tags=["Model Telemetry & Drift Detection"])
 
 
 @app.get("/")
