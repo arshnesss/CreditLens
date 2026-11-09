@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: creditlens-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: creditlens
+      POSTGRES_PASSWORD: creditlens_secret
+      POSTGRES_DB: creditlens_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U creditlens -d creditlens_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: creditlens-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://creditlens:creditlens_secret@db:5432/creditlens_db
+      APP_NAME: "CreditLens AI"
+      DEBUG: "False"
+      ALLOWED_ORIGINS: '["http://localhost:3000", "http://localhost:5173"]'
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: creditlens-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

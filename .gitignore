@@ -1,0 +1,35 @@
+# Environments
+.env
+.env.local
+venv/
+backend/venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite
+*.db
+
+# Node
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+.npm
+
+# ML Artifacts & Datasets
+# Exclude raw uploaded customer datasets that could contain PII
+data/*.csv
+!data/default_of_credit_card_clients_sample.csv
+models/*.joblib
+models/*.pkl
+
+# Testing & Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
