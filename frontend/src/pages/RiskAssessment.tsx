@@ -35,3 +35,4 @@ export const RiskAssessment: React.FC = () => {
     </div>
   );
 };
+

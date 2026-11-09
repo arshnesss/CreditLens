@@ -23,3 +23,4 @@ export const AIInvestigator: React.FC = () => {
     </div>
   );
 };
+

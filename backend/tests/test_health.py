@@ -21,3 +21,4 @@ def test_health_check_endpoint():
     assert data["database"] == "connected"
     assert data["app_name"] == "CreditLens AI"
     assert "timestamp" in data
+

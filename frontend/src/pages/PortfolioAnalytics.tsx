@@ -23,3 +23,4 @@ export const PortfolioAnalytics: React.FC = () => {
     </div>
   );
 };
+

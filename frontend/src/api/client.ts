@@ -21,3 +21,4 @@ export const getHealth = async (): Promise<HealthStatus> => {
   const response = await apiClient.get<HealthStatus>('/health');
   return response.data;
 };
+

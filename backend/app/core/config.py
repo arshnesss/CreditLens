@@ -52,3 +52,4 @@ settings = Settings()
 # Ensure directories exist
 os.makedirs(settings.DATA_DIR, exist_ok=True)
 os.makedirs(settings.MODEL_DIR, exist_ok=True)
+

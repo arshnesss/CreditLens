@@ -52,3 +52,4 @@ def root():
         "docs_url": "/docs",
         "health_url": f"{settings.API_V1_STR}/health"
     }
+

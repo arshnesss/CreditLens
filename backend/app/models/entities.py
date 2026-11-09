@@ -146,3 +146,4 @@ class MonitoringRecord(Base):
     anomalies_detected = Column(Integer, default=0)
     metrics_json = Column(Text, nullable=True)
     recorded_at = Column(DateTime, default=datetime.utcnow)
+

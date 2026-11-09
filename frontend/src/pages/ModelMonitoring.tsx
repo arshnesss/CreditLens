@@ -23,3 +23,4 @@ export const ModelMonitoring: React.FC = () => {
     </div>
   );
 };
+
