@@ -5,7 +5,7 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6.svg)](https://www.typescriptlang.org)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC.svg)](https://tailwindcss.com)
-[![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
+[![SHAP](https://img.shields.io/badge/XAI-SHAP%20TreeExplainer-orange.svg)](https://shap.readthedocs.io)
 
 > **Important Educational Disclaimer**: CreditLens AI is an educational portfolio project demonstrating end-to-end credit risk modeling, calibrated probability estimation, SHAP explainability, and autonomous investigation workflows. It is **not** a production banking decision system and must **never** be used for actual lending decisions.
 
@@ -17,39 +17,40 @@ CreditLens AI is organized as a production-grade monorepo containing:
 
 - **Frontend**: React 19 + TypeScript + Vite + Tailwind CSS + Lucide Icons + Recharts + React Router.
 - **Backend**: FastAPI + SQLAlchemy 2.0 + Pydantic v2 + Alembic migrations.
-- **Machine Learning**: Scikit-learn Pipeline (ColumnTransformer, Stratified K-Fold CV, Calibrated Classifier).
+- **Machine Learning**: Scikit-learn Pipeline (ColumnTransformer, Stratified 5-Fold CV, Calibrated Random Forest Champion).
 - **Explainability**: SHAP (TreeExplainer) with game-theoretic individual feature contributions and directionality.
-- **Agentic AI**: Deterministic LangGraph credit investigation tools.
-- **Monitoring & Drift**: Statistical Kolmogorov-Smirnov drift tests and Isolation Forest anomaly detection.
-- **Persistence**: PostgreSQL (production / Docker) and SQLite (zero-config local development).
+- **Autonomous Agent**: Deterministic Python analytical tools orchestrated for transparent credit investigations.
+- **Monitoring & Drift**: Two-sample Kolmogorov-Smirnov statistical tests and Isolation Forest anomaly detection.
+- **Persistence & Reports**: PostgreSQL / SQLite dual-engine, with ReportLab audit PDF generator.
 
 ```
 creditlens-ai/
 ├── frontend/             # React 19 + TypeScript + Vite UI
 │   ├── src/
 │   │   ├── api/          # Central API client
-│   │   ├── components/   # Sidebar, Header, Layout, UI widgets
+│   │   ├── components/   # Sidebar, Header, Layout
 │   │   ├── pages/        # 8 Platform sections
 │   │   └── App.tsx
-│   ├── package.json
-│   └── vite.config.ts
 ├── backend/              # FastAPI Application
 │   ├── app/
-│   │   ├── api/          # REST endpoints (health, datasets, predictions, etc.)
+│   │   ├── api/          # REST endpoints (health, datasets, predictions, agent, monitoring)
 │   │   ├── core/         # Settings, database connection
 │   │   ├── models/       # SQLAlchemy ORM entities
 │   │   ├── schemas/      # Pydantic v2 validation contracts
 │   │   ├── ml/           # Dataset loader, preprocessing, training & calibration
-│   │   ├── agent/        # LangGraph autonomous investigator
-│   │   └── monitoring/   # Drift detection & Isolation Forest
+│   │   ├── agent/        # Deterministic tools & investigation orchestrator
+│   │   └── monitoring/   # KS drift detection & Isolation Forest
 │   ├── alembic/          # Database migrations
-│   ├── tests/            # Pytest test suite
+│   ├── tests/            # 25 automated unit & integration tests
 │   └── requirements.txt
-├── data/                 # Benchmark credit datasets (UCI default credit cards)
+├── data/                 # Benchmark credit datasets (UCI default credit cards) & PDF reports
 ├── models/               # Serialized pipelines and model metadata
 ├── docs/                 # Methodology, schema, and API documentation
+│   ├── architecture.md
+│   ├── agent_workflow.md
+│   ├── database_schema.md
+│   └── ml_evaluation_report.md
 ├── docker-compose.yml    # Multi-container orchestration (App + PostgreSQL)
-├── .env.example          # Environment variables template
 └── README.md
 ```
 
@@ -57,7 +58,18 @@ creditlens-ai/
 
 ## 🚀 Quick Start Guide
 
-### Option 1: Local Development (Fastest, zero-config SQLite)
+### Active Ports & URLs
+
+| Service | Host | Port | URL |
+| :--- | :--- | :--- | :--- |
+| **React Frontend** | `127.0.0.1` | **`5173`** | [http://localhost:5173](http://localhost:5173) |
+| **FastAPI Backend** | `127.0.0.1` | **`8000`** | [http://localhost:8000](http://localhost:8000) |
+| **Interactive Swagger Docs**| `127.0.0.1` | **`8000`** | [http://localhost:8000/docs](http://localhost:8000/docs) |
+| **API Health Check** | `127.0.0.1` | **`8000`** | [http://localhost:8000/api/health](http://localhost:8000/api/health) |
+
+---
+
+### Local Development (Zero-Config SQLite)
 
 #### 1. Backend Setup
 ```bash
@@ -65,59 +77,36 @@ creditlens-ai/
 cd "c:\Users\Arsh Sharma\OneDrive\Desktop\project diwali"
 
 # Activate Python Virtual Environment
-# Windows:
 .\backend\venv\Scripts\activate
 
-# Install dependencies (if not already done)
+# Install dependencies (if needed)
 pip install -r backend/requirements.txt
 
-# Run database migrations
+# Run migrations
 alembic upgrade head
 
 # Start FastAPI server
 python -m uvicorn backend.app.main:app --reload --port 8000
 ```
-Backend API will be accessible at:
-- API Base: `http://localhost:8000`
-- Interactive Swagger Docs: `http://localhost:8000/docs`
-- Health check: `http://localhost:8000/api/health`
 
 #### 2. Frontend Setup
 ```bash
-# In a new terminal:
 cd frontend
-
-# Install dependencies
 npm install
-
-# Start Vite dev server
 npm run dev
 ```
-Frontend will be running at `http://localhost:5173`.
+Frontend runs at `http://localhost:5173`.
 
 ---
 
-### Option 2: Docker Compose (PostgreSQL + App Services)
+## 🧪 Testing Suite (25 Tests Passing)
 
-```bash
-# Build and run containers
-docker-compose up --build
-```
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8000`
-- PostgreSQL: `localhost:5432`
-
----
-
-## 🧪 Testing
-
-### Backend Tests
+Execute all backend unit, ML, and integration tests:
 ```bash
 pytest
 ```
-All unit tests, database migrations, and API route contracts are verified with pytest.
 
-### Frontend Typecheck & Build
+Build and typecheck the React frontend:
 ```bash
 cd frontend
 npm run build
@@ -125,14 +114,23 @@ npm run build
 
 ---
 
-## 📑 Platform Navigation Sections
+## 🎯 9-Step Demo Walkthrough
 
-1. **Overview**: Portfolio KPIs, default rate, calibration, and quick actions.
-2. **Customers**: Search, filter, and sort accounts by default probability and risk tiers.
-3. **Risk Assessment**: Feature input form, calibrated probability calculation, and real SHAP explanations.
-4. **Portfolio Analytics**: Demographic default distribution, bill/payment correlations, and segments.
-5. **AI Investigator**: Autonomous credit analyst answering analytical inquiries using deterministic tools.
-6. **Model Monitoring**: Statistical feature drift detection, Kolmogorov-Smirnov tests, and Isolation Forest.
-7. **Reports**: Customer-level investigation audit reports and portfolio risk summaries (with PDF/CSV export).
-8. **Settings**: Configurable risk tier thresholds and model registry versions.
+1. **Portfolio Overview**: Open `http://localhost:5173` to view portfolio default rate (22.1%), calibration Brier score (0.1368), and risk tiers.
+2. **Customer Directory**: Navigate to `/customers` to filter accounts by risk tiers or search for specific borrowers. Click **Seed 100 Accounts** to instantly populate records.
+3. **Risk Assessment**: Go to `/risk-assessment`, select a diagnostic scenario (e.g. *Delinquent Credit*), and click **Compute Calibrated Risk**.
+4. **SHAP Waterfall**: Inspect the exact game-theoretic SHAP feature attributions showing which parameters push risk up or down.
+5. **Portfolio Analytics**: Visit `/analytics` to examine default rates by customer segment (e.g., *Revolving Delinquent* at 39.8% vs. *Established Prime* at 14.9%).
+6. **AI Risk Investigator**: Open `/investigator` and ask: *"Why is customer C1000 classified as high risk?"* or *"Compare customer C1000 and C1002"*.
+7. **Model Monitoring & Drift**: Visit `/monitoring` and click **Run Drift Test** to see live two-sample Kolmogorov-Smirnov statistical tests. Click **Simulate Recession Shock** to verify alert trigger sensitivity.
+8. **Isolation Forest Anomalies**: Inspect unsupervised outlier records with unusual debt-to-payment ratios.
+9. **Risk Audit Reports**: Go to `/reports` and generate an audit report with downloadable PDF export.
 
+---
+
+## 📚 Technical Documentation
+
+- [System Architecture](file:///docs/architecture.md)
+- [Agent Workflow & Safety Guardrails](file:///docs/agent_workflow.md)
+- [Database Schema & ERD](file:///docs/database_schema.md)
+- [Machine Learning Evaluation Report](file:///docs/ml_evaluation_report.md)
