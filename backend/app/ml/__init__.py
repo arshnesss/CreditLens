@@ -7,7 +7,8 @@ from backend.app.ml.dataset import (
 )
 from backend.app.ml.preprocessing import (
     build_preprocessor,
-    prepare_stratified_split
+    prepare_stratified_split,
+    get_feature_names_out
 )
 from backend.app.ml.train import (
     train_and_evaluate_pipeline,
@@ -16,6 +17,10 @@ from backend.app.ml.train import (
 from backend.app.ml.predict import (
     predict_credit_risk,
     classify_risk_category
+)
+from backend.app.ml.explainability import (
+    explain_customer_prediction,
+    get_global_shap_importance
 )
 
 __all__ = [
@@ -29,5 +34,7 @@ __all__ = [
     "train_and_evaluate_pipeline",
     "evaluate_model_performance",
     "predict_credit_risk",
-    "classify_risk_category"
+    "classify_risk_category",
+    "explain_customer_prediction",
+    "get_global_shap_importance"
 ]
